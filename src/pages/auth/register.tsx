@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 const Register = (props: any) => {
@@ -36,7 +37,7 @@ const Register = (props: any) => {
       
             <p className="text-center text-sm text-gray-500">
               Already have an account?
-              <a href="/auth/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Login</a>
+              <Link href="/auth/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Login</Link>
             </p>
           </form>
         </div>

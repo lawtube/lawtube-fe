@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 const Login = (props: any) => {
@@ -32,8 +33,8 @@ const Login = (props: any) => {
             <button type="submit" className="bg-indigo-600 text-white rounded-md mt-3 py-2 text-sm font-semibold leading-6 shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600">Sign in</button>
       
             <p className="text-center text-sm text-gray-500">
-              Don't have an account?
-              <a href="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Register</a>
+              Do not have an account?
+              <Link href="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Register</Link>
             </p>
           </form>
         </div>

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {HomeIcon, VideoCameraIcon , ArrowRightOnRectangleIcon} from "@heroicons/react/24/solid"
+import Link from 'next/link';
 
 const Sidebar = () => {
   return (
@@ -26,24 +27,24 @@ const Sidebar = () => {
           </div>
         </li>
         <li>
-          <a href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+          <Link href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
             <HomeIcon className='ml-4 h-5 w-5'/>
             <span className="ml-2 text-sm tracking-wide truncate"> Feeds </span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+          <Link href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
             <VideoCameraIcon className='ml-4 h-5 w-5'/>
             <span className="ml-2 text-sm tracking-wide truncate"> Highlight </span>
             <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-indigo-500 bg-indigo-50 rounded-full">New</span>
-          </a>
+          </Link>
         </li>
 
         <li>
-          <a href="/auth/login" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+          <Link href="/auth/login" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
             <ArrowRightOnRectangleIcon className='ml-4 h-5 w-5'/>
             <span className="ml-2 text-sm tracking-wide truncate">Logout</span>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>
