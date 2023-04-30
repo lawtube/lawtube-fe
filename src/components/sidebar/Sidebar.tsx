@@ -2,8 +2,28 @@
 import React from 'react';
 import {HomeIcon, VideoCameraIcon , ArrowRightOnRectangleIcon} from "@heroicons/react/24/solid"
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import router from 'next/router';
 
-const Sidebar = () => {
+const Sidebar = (user: any) => {
+  const logout = async () => {
+    try {
+      
+      localStorage.setItem("Authorization", "");
+      toast.success("Logout Successful", {
+        position: "bottom-right",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      router.push("/auth/login");
+    } catch (error) {
+      console.error(error);
+      
+    }
+  };
   return (
 
   <div className="fixed flex flex-col top-0 left-0 w-64 bg-gray-50 h-full border-r border-indigo-200">
@@ -14,10 +34,10 @@ const Sidebar = () => {
     <div className="overflow-y-auto overflow-x-hidden flex-grow">
       <div className='flex flex-col items-center justify-center mt-2'>
         <div className="mb-4 relative inline-flex items-center justify-center w-20 h-20 overflow-hidden bg-indigo-600 rounded-full ">
-          <span className="font-medium text-gray-600 dark:text-gray-300">A</span>
+          <span className="font-medium text-gray-600 dark:text-gray-300">a</span>
         </div>
-        <span className="text-gray-600 hover:text-gray-800 text-sm tracking-wide font-semibold">Asyraf</span>
-
+        <span className="text-gray-600 hover:text-gray-800 text-sm tracking-wide font-semibold">{user?.user?.username}</span>
+        <span className="text-gray-600 hover:text-gray-800 text-sm tracking-wide ">{user?.user?.email}</span>
       </div>
       <div className='mt-4 border-b-2'></div>
       <ul className="flex flex-col py-4 space-y-1">
@@ -41,10 +61,10 @@ const Sidebar = () => {
         </li>
 
         <li>
-          <Link href="/auth/login" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+          <button onClick={logout} className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
             <ArrowRightOnRectangleIcon className='ml-4 h-5 w-5'/>
             <span className="ml-2 text-sm tracking-wide truncate">Logout</span>
-          </Link>
+          </button>
         </li>
       </ul>
     </div>
