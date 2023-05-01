@@ -29,7 +29,6 @@ const Sidebar = (user: any) => {
   <div className="fixed flex flex-col top-0 left-0 w-64 bg-gray-50 h-full border-r border-indigo-200">
     <div className="flex items-center justify-center h-14 ">
       <div className='text-gray-600 hover:text-gray-800 ' > Law<span className="text-sm text-indigo-600 font-bold">Tube</span></div>
-      
     </div>
     <div className="overflow-y-auto overflow-x-hidden flex-grow">
       <div className='flex flex-col items-center justify-center mt-2'>
