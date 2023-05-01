@@ -98,7 +98,7 @@ const Sidebar: React.FC<NavWrapperProps> = ({ children, className }) => {
                       </div>
                     </li>
                     <li>
-                      <Link href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                      <Link href="/" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
                         <HomeIcon className='ml-4 h-5 w-5' />
                         <span className="ml-2 text-sm tracking-wide truncate"> Feeds </span>
                       </Link>
