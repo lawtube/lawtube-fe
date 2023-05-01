@@ -52,10 +52,8 @@ export default function Home() {
     <>
       {user && (
         <>
-        <Grid templateColumns="14% 86%" gap={0}>
-          <GridItem  overflow="hidden">
-            <Sidebar user={user} />
-          </GridItem>
+        <Grid >
+
           <GridItem>
             <Center >
 
