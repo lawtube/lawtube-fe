@@ -18,8 +18,29 @@ const Login = () => {
     const onSubmit = async () => {
       try {
         const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", userInput,{ withCredentials: true });
-        localStorage.setItem("Authorization", response.data.token as string);
-        router.push("/");
+        if(response.data.status == 200){
+          toast.success(`${response.data.message}`, {
+            position: "bottom-right",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          localStorage.setItem("Authorization", response.data.data.token as string);
+          router.push("/");
+        }
+        else{
+          toast.error(`${response.data.message}`, {
+            position: "bottom-right",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+        
       } catch (error) {
         console.error(error);
         toast.error("Failed to login", {

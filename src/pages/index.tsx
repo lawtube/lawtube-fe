@@ -24,7 +24,8 @@ export default function Home() {
           Authorization: auth,
         },
       });
-      setUser(response.data);
+      console.log(response.data)
+      setUser(response.data.data);
      
     } catch (error) {
       console.error(error);

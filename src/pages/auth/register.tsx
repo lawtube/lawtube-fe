@@ -17,15 +17,29 @@ const Register = () => {
     const onSubmit = async () => {
       try {
         const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/register", userInput);
-        toast.success(`${response.data.status}`, {
-          position: "bottom-right",
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-          },
-        });
-        router.push("/auth/login")
+        if(response.data.status == 201){
+          toast.success(`${response.data.message}`, {
+            position: "bottom-right",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          router.push("/auth/login")
+        }
+        else{
+          toast.error(`${response.data.message}`, {
+            position: "bottom-right",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+          
+        
       } catch (error) {
 
         toast.error("Failed to sign up", {
