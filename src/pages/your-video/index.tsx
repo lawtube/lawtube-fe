@@ -52,7 +52,7 @@ const YourVideo: NextPage = () => {
                                 <td><CheckIcon className="h-4 w-4" /></td>
                                 <td>See Detail</td>
                                 <td>Completed</td>
-                                <td>Download Hightlight | Download Subtitle</td>
+                                <td>Download Highlight | Download Subtitle</td>
                             </tr>
                         </tbody>
                     </table>

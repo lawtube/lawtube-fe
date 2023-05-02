@@ -1,10 +1,21 @@
 import { type NextPage } from "next";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/router";
 
 const AddVideo: NextPage = () => {
 
+    const router = useRouter();
     return (
         <>
+            <div className= "items-center justify-center text-center mt-8">
+                <ul className="steps">
+                    <li className="step step-primary">Upload</li>
+                    <li className="step">Highlight</li>
+                    <li className="step">Subtitle</li>
+                    <li className="step">Content Moderation</li>
+                    <li className="step">Publish</li>
+                </ul>
+            </div>
             <div className="flex items-center justify-center">
                 <div className="flex items-center justify-center w-full h-screen">
                     <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-5/6 h-3/4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -15,9 +26,9 @@ const AddVideo: NextPage = () => {
                         <input id="dropzone-file" type="file" className="hidden" />
                     </label>
                 </div>
-                <button className="btn btn-circle btn-outline mr-20">
+                <button className="btn btn-circle btn-outline mr-20" onClick={() => router.push("/add-video/highlight")}>
                     <ArrowRightIcon className="h-6 w-6"/>
-                </button>
+                </button> 
             </div>
         </>
     );
