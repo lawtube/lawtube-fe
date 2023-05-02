@@ -89,14 +89,7 @@ const Sidebar: React.FC<NavWrapperProps> = ({ children, className }) => {
                     </div>
                     <span className="text-gray-600 hover:text-gray-800 text-sm tracking-wide font-semibold">{user?.username}</span>
                     <span className="text-gray-600 hover:text-gray-800 text-sm tracking-wide ">{user?.email}</span>
-                    <Link href='add-video'>
-                      <div className='text-gray-600 hover:text-black text-m tracking-wide flex'>
-                        <div className='px-2'>
-                          <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m11 8h-2v3h-3v2h3v3h2v-3h3v-2h-3z"/><path d="m18 7c0-1.103-.897-2-2-2h-12c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-3.333l4 3.333v-10l-4 3.333zm-1.999 10h-12.001v-10h12v5z"/></svg>
-                        </div>
-                        Add Video
-                      </div>
-                    </Link>
+
                   </div>
                   <div className='mt-4 border-b-2'></div>
                   <ul className="flex flex-col py-4 space-y-1">
@@ -118,9 +111,9 @@ const Sidebar: React.FC<NavWrapperProps> = ({ children, className }) => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                      <Link href="/add-video" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
                         <VideoCameraIcon className='ml-4 h-5 w-5' />
-                        <span className="ml-2 text-sm tracking-wide truncate"> Highlight </span>
+                        <span className="ml-2 text-sm tracking-wide truncate"> Add Video </span>
                         <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-indigo-500 bg-indigo-50 rounded-full">New</span>
                       </Link>
                     </li>
