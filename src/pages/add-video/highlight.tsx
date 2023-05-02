@@ -8,7 +8,7 @@ import { AiOutlineUser, AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import * as ReactDOMClient from 'react-dom/client';
 import { createElement } from 'react';
 import { time } from 'console';
-
+import { useRouter } from "next/router";
 
 export default function Edit() {
     const [currentTime, setCurrentTime] = useState(0);
@@ -19,6 +19,7 @@ export default function Edit() {
     const [inEditing, setInEditing] = useState(false);
     const [isEditingEnd, setIsEditingEnd] = useState(false);
     const [timeId, setTimeId] = useState(0)
+    const router = useRouter();
 
     const [hasWindow, setHasWindow] = useState(false);
     useEffect(() => {
@@ -108,7 +109,7 @@ export default function Edit() {
             div.id = `set${String(e)}`
             div.innerHTML += "<p>Select Starting Point</p>"
             const button = document.createElement("button")
-            button.className = "btn btn-xs btn-square ml-2 px-2 w-fit"
+            button.className = "btn btn-primary btn-xs btn-square ml-2 px-2 w-fit"
             button.innerHTML = "Next"
             button.onclick = function () {
                 selectStartingPoint(e);
@@ -136,7 +137,7 @@ export default function Edit() {
             div.id = `set${String(e)}`
             div.innerHTML += "<p>Select Ending Point</p>"
             const button = document.createElement("button")
-            button.className = "btn btn-xs btn-square ml-2 px-2 w-fit"
+            button.className = "btn btn-primary btn-xs btn-square ml-2 px-2 w-fit"
             button.innerHTML = "Next"
             button.onclick = function () {
                 selectEndingPoint(e);
@@ -186,38 +187,49 @@ export default function Edit() {
 
     return (
         <>
-            <div className="flex flex-row items-center min-h-screen">
-                {hasWindow && <ReactPlayer
-                    ref={playerRef}
-                    url="https://cdn.discordapp.com/attachments/1055222394534510664/1100873474899185684/rakamis.mp4"
-                    onSeek={handleSeek}
-                    width="65%"
-                    height="65%"
-                    controls={true}
-                    onProgress={handleProgress}
-                />
-                }
+            <div className="items-center justify-center text-center mt-8">
+                <ul className="steps">
+                    <li className="step step-primary" onClick={() => router.push("/add-video/")} style={{ cursor: "pointer" }}>Upload</li>
+                    <li className="step step-primary">Highlight</li>
+                    <li className="step">Subtitle</li>
+                    <li className="step">Content Moderation</li>
+                    <li className="step">Publish</li>
+                </ul>
+            </div>
+                <div className="flex flex-row justify-center items-center min-h-screen">
+                    
+                    {hasWindow && <ReactPlayer
+                        ref={playerRef}
+                        url="https://cdn.discordapp.com/attachments/1055222394534510664/1100873474899185684/rakamis.mp4"
+                        onSeek={handleSeek}
+                        width="65%"
+                        height="65%"
+                        controls={true}
+                        onProgress={handleProgress}
+                    />
+                    }
+                    
 
-                <div className="flex flex-col ml-5">
-                    {showInitialAdd && (
-                        <button onClick={handleClickInitial} className="btn btn-square w-fit px-5 ml-3">
-                            Add Highlight Timestamp
-                        </button>
-                    )}
-                    <div>
-                        <div id="timestamps">
-
-                        </div>
-                        {!showInitialAdd && (
-                            <>
-                                <button onClick={addNewTimestamp} disabled={disableAdd} className="btn btn-square w-fit px-5 ml-3"><AiOutlinePlus /></button>
-                                <button onClick={removeTimestamp} disabled={disableAdd} className="btn btn-square w-fit px-5 ml-3"><AiOutlineMinus /></button>
-                                <button onClick={() => console.log(startTime)} className="btn btn-square w-fit px-5 ml-3">Submit</button>
-                            </>
+                    <div className="flex flex-col ml-5">
+                        {showInitialAdd && (
+                            <button onClick={handleClickInitial} className="btn btn-primary btn-square w-fit px-5 ml-3">
+                                Add Highlight Timestamp
+                            </button>
                         )}
+                        <div>
+                            <div id="timestamps">
+
+                            </div>
+                            {!showInitialAdd && (
+                                <>
+                                    <button onClick={addNewTimestamp} disabled={disableAdd} className="btn btn-primary btn-square w-fit px-5 ml-3"><AiOutlinePlus /></button>
+                                    <button onClick={removeTimestamp} disabled={disableAdd} className="btn btn-primary btn-square w-fit px-5 ml-3"><AiOutlineMinus /></button>
+                                </>
+                            )}
+                            <button onClick={() => router.push("/add-video/subtitle")} className="btn btn-primary btn-square w-fit px-5 ml-3 mt-5">Complete</button>
+                        </div>
                     </div>
                 </div>
-            </div>
         </>
     );
 }
