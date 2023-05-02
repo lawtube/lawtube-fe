@@ -9,8 +9,8 @@ const AddVideo: NextPage = () => {
         <>
             <div className= "items-center justify-center text-center mt-8">
                 <ul className="steps">
-                    <li className="step step-primary" onClick={() => router.push("/add-video/")}>Upload</li>
-                    <li className="step step-primary" onClick={() => router.push("/add-video/highlight")}>Highlight</li>
+                    <li className="step step-primary" onClick={() => router.push("/add-video/")} style={{ cursor: "pointer" }}>Upload</li>
+                    <li className="step step-primary" onClick={() => router.push("/add-video/highlight")} style={{ cursor: "pointer" }}>Highlight</li>
                     <li className="step step-primary">Subtitle</li>
                     <li className="step">Content Moderation</li>
                     <li className="step">Publish</li>
