@@ -18,7 +18,6 @@ const YourVideo: NextPage = () => {
                                 <th>Visibility</th>
                                 <th>Highlight</th>
                                 <th>Subtitle</th>
-                                <th>Action</th>
                                 <th>Status</th>
                                 <th>Download</th>
                             </tr>
@@ -30,7 +29,6 @@ const YourVideo: NextPage = () => {
                                 <td><EyeSlashIcon className="h-4 w-4" /> Private</td>
                                 <td><CheckIcon className="h-4 w-4" /></td>
                                 <td><XMarkIcon className="h-4 w-4" /></td>
-                                <td>-</td>
                                 <td><progress className="progress w-56" value="55" max="100"></progress></td>
                                 <td>In Progress</td>
                             </tr>
@@ -40,7 +38,6 @@ const YourVideo: NextPage = () => {
                                 <td><EyeIcon className="h-4 w-4" /> Public</td>
                                 <td><CheckIcon className="h-4 w-4" /></td>
                                 <td><XMarkIcon className="h-4 w-4" /></td>
-                                <td>See Detail</td>
                                 <td>Completed</td>
                                 <td>Download Highlight</td>
                             </tr>
@@ -50,7 +47,6 @@ const YourVideo: NextPage = () => {
                                 <td><EyeIcon className="h-4 w-4" /> Public</td>
                                 <td><CheckIcon className="h-4 w-4" /></td>
                                 <td><CheckIcon className="h-4 w-4" /></td>
-                                <td>See Detail</td>
                                 <td>Completed</td>
                                 <td>Download Highlight | Download Subtitle</td>
                             </tr>
