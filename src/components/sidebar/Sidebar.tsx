@@ -34,7 +34,7 @@ const Sidebar: React.FC<NavWrapperProps> = ({ children, className }) => {
           Authorization: auth,
         },
       });
-      console.log(response.data)
+      // console.log(response.data)
       setUser(response.data.data);
 
     } catch (error) {

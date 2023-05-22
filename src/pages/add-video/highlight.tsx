@@ -13,6 +13,12 @@ import { useRouter } from "next/router";
 import { start } from 'repl';
 
 export default function Edit() {
+    const [user, setUser] = useState<any>(null);
+    const [selectedFile, setSelectedFile] = useState<any>(null);
+    const [fileData, setFileData] = useState<any>(null);
+    const [generateSubtitle, setGenerateSubtitle] = useState<boolean>(false);
+    const [generateHighlight, setGenerateHighlight] = useState<boolean>(false);
+
     const [currentTime, setCurrentTime] = useState(0);
     const playerRef = useRef<ReactPlayer>(null);
     const [startTime, setStartTime] = useState<Array<number>>([]);
@@ -21,7 +27,6 @@ export default function Edit() {
     const [inEditing, setInEditing] = useState(false);
     const [isEditingEnd, setIsEditingEnd] = useState(false);
     const [timeId, setTimeId] = useState(0)
-    const router = useRouter();
 
     const [isUpload, setIsUpload] = useState(true)
     const [isHighlight, setIsHighlight] = useState(false)
@@ -29,22 +34,16 @@ export default function Edit() {
     const [isModeration, setIsModeration] = useState(false)
     const [isFinish, setIsFinish] = useState(false)
     const [isInitiating, setIsInitiating] = useState(false)
-    const [visibility, setVisibility] = useState("")
-
-    const [user, setUser] = useState<any>(null);
-    const [selectedFile, setSelectedFile] = useState<any>(null);
-    const [fileData, setFileData] = useState<any>(null);
-    const [generateSubtitle, setGenerateSubtitle] = useState(false);
-    const [generateHighlight, setGenerateHighlight] = useState(false);
+    const [visibility, setVisibility] = useState<string>("")
 
     const [title, setTitle] = useState("");
 
     const [hasWindow, setHasWindow] = useState(false);
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setHasWindow(true);
-        }
-    }, []);
+
+    const [testState, setTestState] = useState(0);
+    const [testStatelagi, setTestStatelagi] = useState(0);
+
+    const router = useRouter();
 
     useEffect(() => {
         const auth = localStorage.getItem("Authorization");
@@ -55,6 +54,25 @@ export default function Edit() {
         }
     }, [router]);
 
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setHasWindow(true);
+        }
+    }, []);
+
+    // useEffect(() => {
+    //     if (user) {
+    //       setUser(user)
+    //       console.log("hai", user) // Panggil fungsi handleUpload saat user dan selectedFile berubah
+    //     } 
+    //     if (generateHighlight) {
+    //         setGenerateHighlight(generateHighlight)
+    //     }
+    //     if (visibility) {
+    //         setVisibility(visibility)
+    //     }
+    //   }, [user, generateHighlight, visibility]);
+
     const getUserDetail = async (auth: any) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/user`, {
@@ -62,8 +80,8 @@ export default function Edit() {
                     Authorization: auth,
                 },
             });
-            setUser(response.data);
-            console.log(response.data)
+            setUser(response.data.data.id);
+            console.log("ini awal", user)
 
         } catch (error) {
             console.error(error);
@@ -106,17 +124,23 @@ export default function Edit() {
         }
     };
 
-    const pushToNest = async (token: string, videolink: string) => {
+    const pushToNest = async (token: string, videolink: string, post_visibility: string) => {
         try {
+            var includeHighlight = false;
+            if (startTime.length > 0) {
+                setGenerateHighlight(true)
+                includeHighlight = true;
+            }
+
             const payload_data = {
                 "token": token,
                 "judul": title,
-                "visibility": visibility,
+                "visibility": post_visibility,
                 "videolink": videolink,
-                "doHighlight": generateHighlight,
+                "doHighlight": includeHighlight,
                 "doSubtitle": generateSubtitle,
                 "status": "processing video",
-                "userId": user?.id
+                "userId": user
             }
 
             console.log(payload_data)
@@ -135,19 +159,26 @@ export default function Edit() {
         }
     }
 
-    const handleUpload = async () => {
+    const handleUpload = async (post_visibility: string) => {
         try {
-            console.log("lagi bikin task ke orchestra...")
             const orchest_response = await createTask();
-            console.log("dapet token")
             const token = orchest_response.token
             const videolink = orchest_response.video_url
-            console.log("lagi bikin ke nest...")
-            await pushToNest(token, videolink);
-            console.log("berhasil")
+            await pushToNest(token, videolink, post_visibility);
             router.push("/your-video")
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const handleClickFinish = (visibility: string) => {
+        setIsInitiating(true); 
+        if (visibility === "public") {
+            setVisibility("public")
+            handleUpload("public")
+        } else {
+            setVisibility("private")
+            handleUpload("private")
         }
     }
 
@@ -310,6 +341,9 @@ export default function Edit() {
 
     return (
         <>
+        { user && (
+            <>
+            <p>{user.id} a</p>
             {isHighlight && (
                 <>
                     <div className="items-center justify-center text-center mt-8">
@@ -472,10 +506,10 @@ export default function Edit() {
                         <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Video title" className="border rounded py-2 px-4 w-3/5" />
                     </div>
                     <div className="flex items-center justify-center mt-8">
-                        <button onClick={() => { setIsInitiating(true); setVisibility("public"); handleUpload()}} className={`bg-indigo-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4 ${isInitiating ? 'hidden' : ''}`}>
+                        <button onClick={() => handleClickFinish("public")} className={`bg-indigo-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4 ${isInitiating ? 'hidden' : ''}`}>
                             Upload
                         </button>
-                        <button onClick={() => { setIsInitiating(true); setVisibility("private"); handleUpload()}} className={`bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ${isInitiating ? 'hidden' : ''}`}>
+                        <button onClick={() => handleClickFinish("private")} className={`bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ${isInitiating ? 'hidden' : ''}`}>
                             Save
                         </button>
                     </div>
@@ -484,6 +518,8 @@ export default function Edit() {
                         <progress className="progress w-56 m-4"></progress>
                     </div>
                 </>
+            )}
+            </>
             )}
         </>
 
