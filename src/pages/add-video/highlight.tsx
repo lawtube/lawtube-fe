@@ -132,6 +132,10 @@ export default function Edit() {
                 includeHighlight = true;
             }
 
+            if (includeHighlight) {
+                videolink = ""
+            }
+
             const payload_data = {
                 "token": token,
                 "judul": title,

@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import { CheckIcon, XMarkIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import io from 'socket.io-client';
 import axios from "axios";
 
 
@@ -11,6 +12,7 @@ const YourVideo: NextPage = () => {
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
     const [progress, setProgress] = useState([]);
+    const [newChanges, setNewChanges] = useState(false);
     useEffect(() => {
         const auth = localStorage.getItem("Authorization");
         if (!auth || auth === "") {
@@ -24,7 +26,7 @@ const YourVideo: NextPage = () => {
         if (user) {
             getUserProgress();
         }
-    }, [user]);
+    }, [user, newChanges]);
 
     const getUserDetail = async (auth: any) => {
         try {
@@ -41,40 +43,32 @@ const YourVideo: NextPage = () => {
 
     const getUserProgress = async () => {
         try {
-            console.log("ini user", user.data.id);
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/feeds/progress/${user.data.id}`);
-            setProgress(response.data);
+            console.log("ini", response.data);
+            setProgress(response.data.data);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const [socket, setSocket] = useState<WebSocket | null>(null);
-    // const wsUrl = process.env.NEXT_PUBLIC_BACKEND_URL_WS;
     useEffect(() => {
-        if (!user) return;
-        const newSocket = new WebSocket(`ws://localhost:3000`);
-        setSocket(newSocket);
-
-        return () => newSocket.close();
-    }, [user]);
-
-    useEffect(() => {
-        if (!socket) return;
-
-        socket.onmessage = (event) => {
-            console.log(event)
+        if (!user) {
+            return;
         }
+        const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`);
 
-        const handleMessage = (event: any) => {
-            console.log("masuk")
-            console.log(event)
+        socket.on('broadcast', (data) => {
+            console.log('Received broadcast:', data);
+            console.log(user)
+            if (user.data.id == data) {
+                setNewChanges(newChanges => !newChanges)
+            }
+        });
+
+        return () => {
+            socket.disconnect();
         };
-
-        socket.addEventListener('onMessage', handleMessage);
-
-        return () => socket.removeEventListener('message', handleMessage);
-    }, [socket]);
+    }, [user]);
 
     return (
         <>
@@ -107,29 +101,43 @@ const YourVideo: NextPage = () => {
                                             <p>Completed</p>
                                         ) : (
                                             <>
-                                            <p>{progres.status}</p>
-                                            <progress className="progress w-56 m-4"></progress>
+                                                {(progres.status === "processing video" && progres.doHighlight) && (
+                                                    <>
+                                                        <p className="mx-4">Creating Highlight</p>
+                                                        <progress className="progress w-56 m-4"></progress>
+                                                    </>
+                                                )}
+                                                {((progres.status === "processing video" && !progres.doHighlight && progres.doSubtitle) || (progres.status === "finish highlight" && progres.doSubtitle)) && (
+                                                    <>
+                                                        <p className="mx-4">Creating Subtitle</p>
+                                                        <progress className="progress w-56 m-4"></progress>
+                                                    </>
+                                                )}
+                                                {((progres.status === "processing video" && !progres.doHighlight && !progres.doSubtitle) || (progres.status === "finish highlight" && !progres.doSubtitle) || (progres.status === "finish subtitle")) && (
+                                                    <>
+                                                    <p className="mx-4">Checking Video Safety</p>
+                                                    <progress className="progress w-56 m-4"></progress>
+                                                    </>
+                                                )}
                                             </>
                                         )}
                                     </td>
-
+                                    
                                     <td>
                                         {progres.doHighlight && progres.videolink && (
                                             <>
-                                            <a href={progres.videolink} download>
-                                                Download Highlight
-                                            </a>
-                                            {progres.doSubtitle && progres.sublink && " | "}
+                                                <a href={progres.videolink} download>
+                                                    Download Highlight
+                                                </a>
+                                                {progres.doSubtitle && progres.sublink && " | "}
                                             </>
                                         )}
                                         {progres.doSubtitle && progres.sublink && (
                                             <a href={progres.sublink} download>
-                                            Download Subtitle
+                                                Download Subtitle
                                             </a>
                                         )}
-                                        </td>
-
-
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
