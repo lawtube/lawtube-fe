@@ -11,6 +11,7 @@ import { createElement } from 'react';
 import { time } from 'console';
 import { useRouter } from "next/router";
 import { start } from 'repl';
+import { v4 as uuidv4 } from "uuid";
 
 export default function Edit() {
     const [user, setUser] = useState<any>(null);
@@ -89,7 +90,7 @@ export default function Edit() {
         }
     };
 
-    const createTask = async () => {
+    const createTask = async (token: string) => {
         try {
             var includeHighlight = false;
             if (startTime.length > 0) {
@@ -106,6 +107,7 @@ export default function Edit() {
             const payload_data = {
                 "is_highlight": includeHighlight,
                 "timestamp": timestamp,
+                "token": token,
             }
 
             const formData = new FormData();
@@ -124,7 +126,7 @@ export default function Edit() {
         }
     };
 
-    const pushToNest = async (token: string, videolink: string, post_visibility: string) => {
+    const pushToNest = async (token: string, post_visibility: string) => {
         try {
             var includeHighlight = false;
             if (startTime.length > 0) {
@@ -132,18 +134,13 @@ export default function Edit() {
                 includeHighlight = true;
             }
 
-            if (includeHighlight) {
-                videolink = ""
-            }
-
             const payload_data = {
                 "token": token,
                 "judul": title,
                 "visibility": post_visibility,
-                "videolink": videolink,
                 "doHighlight": includeHighlight,
                 "doSubtitle": generateSubtitle,
-                "status": "processing video",
+                "status": "uploading video",
                 "userId": user
             }
 
@@ -165,10 +162,10 @@ export default function Edit() {
 
     const handleUpload = async (post_visibility: string) => {
         try {
-            const orchest_response = await createTask();
-            const token = orchest_response.token
-            const videolink = orchest_response.video_url
-            await pushToNest(token, videolink, post_visibility);
+            const token = uuidv4();
+            createTask(token);
+            // const token = orchest_response.token
+            await pushToNest(token, post_visibility);
             router.push("/your-video")
         } catch (error) {
             console.log(error)

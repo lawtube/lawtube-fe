@@ -55,7 +55,7 @@ const YourVideo: NextPage = () => {
         if (!user) {
             return;
         }
-        const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`);
+        const socket = io("http://35.209.28.142:3000");
 
         socket.on('broadcast', (data) => {
             console.log('Received broadcast:', data);
@@ -101,6 +101,12 @@ const YourVideo: NextPage = () => {
                                             <p>Completed</p>
                                         ) : (
                                             <>
+                                                {(progres.status === "uploading video") && (
+                                                    <>
+                                                        <p className="mx-4">Uploading Video</p>
+                                                        <progress className="progress w-56 m-4"></progress>
+                                                    </>
+                                                )}
                                                 {(progres.status === "processing video" && progres.doHighlight) && (
                                                     <>
                                                         <p className="mx-4">Creating Highlight</p>
@@ -115,14 +121,14 @@ const YourVideo: NextPage = () => {
                                                 )}
                                                 {((progres.status === "processing video" && !progres.doHighlight && !progres.doSubtitle) || (progres.status === "finish highlight" && !progres.doSubtitle) || (progres.status === "finish subtitle")) && (
                                                     <>
-                                                    <p className="mx-4">Checking Video Safety</p>
-                                                    <progress className="progress w-56 m-4"></progress>
+                                                        <p className="mx-4">Checking Video Safety</p>
+                                                        <progress className="progress w-56 m-4"></progress>
                                                     </>
                                                 )}
                                             </>
                                         )}
                                     </td>
-                                    
+
                                     <td>
                                         {progres.doHighlight && progres.videolink && (
                                             <>
